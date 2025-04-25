@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "crawler/proto";
+
+service ProductAnalysisService {
+  rpc AnalyzeProduct(ProductData) returns (AnalysisResponse) {}
+}
+
+message ProductData {
+  string external_id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 stock = 5;
+  bool is_active = 6;
+  string category_id = 7;
+  string brand_id = 8;
+  string seller_id = 9;
+  repeated ProductImage images = 10;
+  repeated ProductVariant variants = 11;
+  repeated ProductAttribute attributes = 12;
+}
+
+message ProductImage {
+  string url = 1;
+  bool is_video = 2;
+  int32 sort_order = 3;
+}
+
+message ProductVariant {
+  string external_variant_id = 1;
+  string color = 2;
+  string size = 3;
+  double price = 4;
+  double original_price = 5;
+  int32 stock = 6;
+}
+
+message ProductAttribute {
+  string name = 1;
+  string value = 2;
+}
+
+message AnalysisResponse {
+  string status = 1;
+  string message = 2;
+}

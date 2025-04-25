@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package crawler;
+
+option go_package = "github.com/faisaloncode/ecommerce-crawler/crawler/proto";
+
+service CrawlerService {
+  rpc Health(HealthRequest) returns (HealthResponse) {}
+  rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse) {}
+  rpc RefreshCategories(RefreshCategoriesRequest) returns (RefreshCategoriesResponse) {}
+  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse) {}
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse) {}
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  string status = 1;
+}
+
+message Category {
+  string id = 1;
+  string name = 2;
+  string url = 3;
+  int32 product_count = 4;
+}
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+  string image_url = 5;
+  string category_id = 6;
+}
+
+message ListCategoriesRequest {}
+
+message ListCategoriesResponse {
+  repeated Category categories = 1;
+}
+
+message RefreshCategoriesRequest {}
+
+message RefreshCategoriesResponse {
+  string status = 1;
+}
+
+message ListProductsRequest {
+  string category_id = 1;
+  int32 page = 2;
+  int32 per_page = 3;
+}
+
+message ListProductsResponse {
+  repeated Product products = 1;
+  int32 total = 2;
+}
+
+message GetProductRequest {
+  string id = 1;
+}
+
+message GetProductResponse {
+  Product product = 1;
+}
