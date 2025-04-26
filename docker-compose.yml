@@ -46,7 +46,7 @@ services:
       DB_PASS: postgres
       DB_NAME: ecommerce
       SERVER_PORT: 50051
-      PRODUCT_ANALYSIS_SERVICE_ADDR: product-analysis:50051
+      PRODUCT_ANALYSIS_SERVICE_ADDR: product-analysis:50052
       KAFKA_BROKERS: kafka:9092
     ports:
       - "50051:50051"
@@ -55,46 +55,28 @@ services:
         condition: service_healthy
       kafka:
         condition: service_started
-      # product-analysis:
-      #   condition: service_started
+      product-analysis:
+        condition: service_started
 
-  # product-analysis:
-  #   build:
-  #     context: ./product-analysis
-  #   environment:
-  #     DB_HOST: postgres
-  #     DB_PORT: 5432
-  #     DB_USER: postgres
-  #     DB_PASS: postgres
-  #     DB_NAME: ecommerce
-  #     SERVER_PORT: 50051
-  #     KAFKA_BROKERS: kafka:9092
-  #   ports:
-  #     - "50051:50051"
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     kafka:
-  #       condition: service_started
-
-  # notification:
-  #   build:
-  #     context: ./notification
-  #   environment:
-  #     DB_HOST: postgres
-  #     DB_PORT: 5432
-  #     DB_USER: postgres
-  #     DB_PASS: postgres
-  #     DB_NAME: ecommerce
-  #     SERVER_PORT: 8082
-  #     KAFKA_BROKERS: kafka:9092
-  #   ports:
-  #     - "8082:8082"
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     kafka:
-  #       condition: service_started
+  product-analysis:
+    build:
+      context: ./product-analysis
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_NAME: ecommerce
+      PORT: 50052
+      KAFKA_BROKERS: kafka:9092
+    ports:
+      - "50052:50052"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
 
 volumes:
   postgres_data:
